@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('home',HomepageController::class);
+Route::get('placeorder/{product}',[HomepageController::class,'create'])->name('placeorder');
 Route::middleware('auth')->group(function () {
     Route::resource('subcategories', SubcategoryController::class); //
     Route::resource('categories', CategoryController::class); //

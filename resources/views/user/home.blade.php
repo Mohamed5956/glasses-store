@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="card-footer mx-auto my-auto">
                                     <a href="#" class="btn btn-success">Add To Cart</a>
-                                    <a href="#" class="btn btn-success">Buy Now</a>
+                                    <a href="{{route('placeorder',$product)}}" class="btn btn-success">Buy Now</a>
                                 </div>
                             </div>
                         </div>
