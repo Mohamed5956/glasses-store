@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
+use App\Models\Product;
 
 class OrderController extends Controller
 {
@@ -22,7 +23,7 @@ class OrderController extends Controller
     public function create()
     {
         //
-        
+
     }
 
     /**
@@ -31,6 +32,10 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         //
+
+        $product = Product::findOrFail($request->product_id);
+        dd($product);
+        $request->all();
     }
 
     /**

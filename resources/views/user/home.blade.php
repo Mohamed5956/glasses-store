@@ -8,10 +8,10 @@
             <div class="col-md-4">
                 <h3>Categories</h3>
                 <ul class="categories">
-                    @foreach($subcategories as $parentCat)
+                    @foreach($categories as $parentCat)
                         <li>{{ $parentCat->name }}</li>
-                        <ul class="child-categories" ">
-                            @foreach($parentCat->category as $childCat)
+                        <ul class="child-categories" >
+                            @foreach($parentCat->subcategory as $childCat)
                                 <li>{{$childCat->name}}</li>
                             @endforeach
                         </ul>

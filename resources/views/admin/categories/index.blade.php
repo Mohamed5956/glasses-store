@@ -1,16 +1,15 @@
 @extends('layouts.app')
-@section('title') Categoires @endsection
-
+@section('title') Sub Categoires @endsection
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Categories') }}</div>
+                    <div class="card-header">{{ __('categories') }}</div>
 
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="{{ route('categories.create') }}" class="btn btn-primary">{{ __('Create Category') }}</a>
+                            <a href="{{ route('categories.create') }}" class="btn btn-primary">{{ __('Create category') }}</a>
                         </div>
 
                         @if (count($categories) > 0)
@@ -18,15 +17,13 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">{{ __('Name') }}</th>
-                                    <th scope="col">{{__('Category')}}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
                                 </tr>
-                                </thead>Categories
+                                </thead>
                                 <tbody>
                                 @foreach ($categories as $category)
                                     <tr>
                                         <td>{{ $category->name }}</td>
-                                        <td>{{$category->subcategory->name}}</td>
                                         <td>
                                             <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-primary">{{ __('Edit') }}</a>
 
@@ -41,7 +38,7 @@
                                 </tbody>
                             </table>
                         @else
-                            <p>No subcategories found.</p>
+                            <p>No categories found.</p>
                         @endif
                     </div>
                 </div>

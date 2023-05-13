@@ -17,7 +17,7 @@ class HomepageController extends Controller
         $products = Product::all();
         $categories = Category::all();
         $subcategories = Subcategory::all();
-        return view('user.home',['products' => $products, 'subcategories' => $subcategories,'categories' => $categories]);
+        return view('user.home',['products' => $products, 'categories' => $categories,'subcategories' => $subcategories]);
         //
     }
 

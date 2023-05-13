@@ -34,7 +34,8 @@ class ProductController extends Controller
     {
         //
         $categories = Category::all();
-        return view('admin.products.create',['categories' => $categories]);
+        $subcategories = Subcategory::all();
+        return view('admin.products.create',['categories' => $categories,'subcategories'=>$subcategories]);
     }
 
     /**
@@ -62,9 +63,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
         $categories = Category::all();
-        return view('admin.products.edit',['product' => $product,'categories'=>$categories]);
+        $subcategories = Subcategory::all();
+        return view('admin.products.edit',['product' => $product,'subcategories'=>$subcategories,'categories'=>$categories]);
     }
 
     /**
@@ -78,8 +79,8 @@ class ProductController extends Controller
             $this->delete_image($product->image);
             $this->save_image($request->image, $product);
         }
+        $product->subcategory_id = $request->subcategory_id;
         $product->update();
-
         return redirect()->route('products.index')->with('success', 'Product Updated successfully!');
 
     }

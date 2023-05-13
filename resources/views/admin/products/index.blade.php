@@ -18,7 +18,7 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">{{ __('Name') }}</th>
-                                    <th scope="col">{{__('Category')}}</th>
+                                    <th scope="col">{{__('category')}}</th>
                                     <th scope="col">{{__('Price')}}</th>
                                     <th scope="col">{{__('Quantity')}}</th>
                                     <th scope="col">{{__('image')}}</th>
@@ -30,7 +30,7 @@
                                 @foreach ($products as $product)
                                     <tr>
                                         <td>{{ $product->name }}</td>
-                                        <td>{{$product->category->name}}</td>
+                                        <td>{{$product->subcategory->name}}</td>
                                         <td>{{ $product->price }}</td>
                                         <td>{{ $product->quantity }}</td>
                                         <td><img src="{{asset('images/products/' . $product->image)}}" width="120rem" height="90rem"></td>

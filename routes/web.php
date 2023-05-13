@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\admin\SubcategoryController;
+use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderitemController;
@@ -24,10 +24,10 @@ use Illuminate\Support\Facades\Route;
 Route::resource('home',HomepageController::class);
 Route::get('placeorder/{product}',[HomepageController::class,'create'])->name('placeorder');
 Route::middleware('auth')->group(function () {
-    Route::resource('subcategories', SubcategoryController::class); //
+    Route::resource('subcategories',  SubCategoryController::class); //
     Route::resource('categories', CategoryController::class); //
     Route::resource('products', ProductController::class);
 });
-Route::resource('order', \App\Http\Controllers\OrderController::class);
+Route::resource('order', OrderController::class);
 Auth::routes();
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

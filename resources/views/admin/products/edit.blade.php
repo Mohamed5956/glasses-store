@@ -7,7 +7,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Update Product') }}</div>
-                    @if(count($categories)>0)
+                    @if(count($subcategories)>0)
                         <div class="card-body">
                             <form method="POST" action="{{ route('products.update',$product) }}" class="mt-4" enctype="multipart/form-data">
                                 @method('PUT')
@@ -99,11 +99,18 @@
                                 <div class="form-group row mt-2">
                                     <label for="category_id" class="col-md-4 col-form-label text-md-right">Categories:</label>
                                     <div class="col-md-6">
-                                        <select id="category_id" type="text" class="form-control" name="category_id">
-                                            @foreach($categories as $category)
-                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                        <select id="subcategory_id" type="text" class="form-control" name="subcategory_id">
+                                            @foreach($categories as $cat)
+                                                <optgroup label="{{$cat->name}}">
+                                                    @foreach($subcategories as $subcategory)
+                                                        @if($subcategory->category->id == $cat->id)
+                                                            <option value="{{$subcategory->id}}">{{$subcategory->name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </optgroup>
                                             @endforeach
                                         </select>
+
                                     </div>
                                 </div>
 
@@ -118,7 +125,7 @@
                             @else
                                 <div class="d-flex m-4 justify-content-between">
                                     <p class="text-danger fw-bold ">There's No Categories you can't add Product</p>
-                                    <a href="{{route('categories.create')}}"> Go To Categories</a>
+                                    <a href="{{route('subcategories.create')}}"> Go To Categories</a>
                                 </div>
                             @endif
                         </div>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('quantity')->unsigned();
             $table->string('image')->nullable();
             $table->tinyInteger('trend')->default(0);
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('subcategory_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

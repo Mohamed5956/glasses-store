@@ -15,10 +15,10 @@ class Product extends Model
         'quantity',
         'image',
         'trend',
-        'category_id'
+        'subcategory_id'
     ];
-    public function category()
+    public function subcategory()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Subcategory::class);
     }
 }

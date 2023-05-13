@@ -27,7 +27,7 @@ class AdminMiddleware
 
 // Check if the user is authenticated
         if (Auth::check()) {
-            return redirect()->route('home')->with('error', 'You do not have permission to access this page.');
+            return to_route('home.index');
         }
 
         return redirect()->route('login')->with('error', 'You must be logged in to access this page.');

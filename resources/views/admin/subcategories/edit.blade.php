@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Create Subcategory') }}</div>
+                    <div class="card-header">{{ __('Update Sub category') }}</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('subcategories.update',$subcategory) }}">
@@ -17,7 +17,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                                 <div class="col-md-6">
-                                    {{-- @dd($subcategory->name) --}}
+
                                     <input id="name" type="text" class="form-control
                                     @error('name') is-invalid @enderror" name="name" value="{{$subcategory->name}}" required autocomplete="name" autofocus>
 
@@ -29,10 +29,22 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row mt-3">
+                                <label for="subcategory_id" class="col-md-4 col-form-label text-md-right">Sub Category</label>
+
+                                <div class="col-md-6">
+                                    <select name="category_id" class="form-select">
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="form-group row mb-0 mt-3">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Update Sub Category
+                                        Update Category
                                     </button>
                                 </div>
                             </div>

@@ -29,7 +29,7 @@ class UpdateProductRequest extends FormRequest
             'description'=>'required',
             'price'=>'required',
             'quantity'=>'numeric|required',
-            'category_id'=>'required',
+            'subcategory_id'=>'required',
         ];
     }
 }
