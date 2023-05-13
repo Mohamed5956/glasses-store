@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
-use App\Models\Subcategory;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\AdminMiddleware;
 use App\Models\Category;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class SubcategoryController extends Controller
 {
+    function __construct(){
+        $this->middleware(AdminMiddleware::class);
+    }
     public function index()
     {
         $subcategories = Subcategory::orderBy('name')->get();
@@ -23,21 +27,20 @@ class SubcategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|unique:subcategories|max:255',
-            'slug' => 'required|unique:subcategories|max:255',
-            'category_id' => 'required|exists:categories,id'
+        $request->validate([
+            'name' => 'required|max:255',
         ]);
+        // dd($request->all());
 
-        $subcategory = Subcategory::create($validatedData);
-
+        $subcat = Subcategory::create($request->all());
+        $subcat->save();
         return redirect()->route('subcategories.index')->with('success', 'Subcategory created successfully!');
     }
 
     public function edit(Subcategory $subcategory)
     {
-        $categories = Category::orderBy('name')->get();
-        return view('admin.subcategories.edit', compact('subcategory', 'categories'));
+        // dd($subcategory);
+        return view('admin.subcategories.edit', compact('subcategory', 'subcategory'));
     }
 
     public function update(Request $request, Subcategory $subcategory)
@@ -45,15 +48,8 @@ class SubcategoryController extends Controller
         $validatedData = $request->validate([
             'name' => [
                 'required',
-                Rule::unique('subcategories')->ignore($subcategory->id),
                 'max:255'
             ],
-            'slug' => [
-                'required',
-                Rule::unique('subcategories')->ignore($subcategory->id),
-                'max:255'
-            ],
-            'category_id' => 'required|exists:categories,id'
         ]);
 
         $subcategory->update($validatedData);
