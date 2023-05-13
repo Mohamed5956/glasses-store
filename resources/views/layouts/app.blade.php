@@ -29,7 +29,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    @if(Auth::user()->role=='admin')
+                    @if(Auth::user() && Auth::user()->role=='admin')
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('categories.index')}}">Categories</a>
@@ -43,7 +43,6 @@
                         </ul>
                     @else
                         <ul class="navbar-nav me-auto">
-
                         </ul>
                     @endif
                     <!-- Right Side Of Navbar -->
@@ -89,5 +88,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    @yield('scripts')
 </body>
 </html>

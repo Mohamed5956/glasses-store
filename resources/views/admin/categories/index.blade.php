@@ -18,7 +18,7 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">{{ __('Name') }}</th>
-                                    <th scope="col">{{__('Sub Category')}}</th>
+                                    <th scope="col">{{__('Category')}}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
                                 </tr>
                                 </thead>Categories

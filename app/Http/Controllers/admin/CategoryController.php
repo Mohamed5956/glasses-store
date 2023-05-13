@@ -3,16 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\AdminMiddleware;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    function __construct(){
-        $this->middleware(AdminMiddleware::class);
-    }
     /**
      * Display a listing of the resource.
      */

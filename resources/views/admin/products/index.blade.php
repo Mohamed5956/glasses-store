@@ -20,7 +20,7 @@
                                     <th scope="col">{{ __('Name') }}</th>
                                     <th scope="col">{{__('Category')}}</th>
                                     <th scope="col">{{__('Price')}}</th>
-                                    <th scope="col">{{__('Quantity')}}}</th>
+                                    <th scope="col">{{__('Quantity')}}</th>
                                     <th scope="col">{{__('image')}}</th>
                                     <th scope="col">{{__('On Sale')}}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
@@ -43,8 +43,7 @@
                                         </td>
 
                                         <td>
-                                            <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-primary">{{ __('Edit') }}</a>
-
+                                            <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning">{{ __('Edit') }}</a>
                                             <form class="d-inline" method="POST" action="{{ route('products.destroy', $product) }}">
                                                 @csrf
                                                 @method('DELETE')
