@@ -93,6 +93,8 @@ class CartController extends Controller
     }
     public function cartCount()
     {
+//        dd("HI");
+
         $user = Auth::user();
         $cartCount = Cart::where('user_id', $user->id)->sum('prod_qty');
         return response()->json(['cartCount' => $cartCount]);

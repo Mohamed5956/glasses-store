@@ -21,7 +21,7 @@ class OrderController extends Controller
      * Display a listing of the resource.
      */
     public function checkout(){
-        
+
     }
     public function index()
     {

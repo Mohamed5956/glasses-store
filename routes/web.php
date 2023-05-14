@@ -22,16 +22,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('home',HomepageController::class);
+Route::post('filter',[HomepageController::class,'filter'])->name('home.filter');
+Route::get('productList',[HomepageController::class,'productList'])->name('productList');
+Route::get('sales',[HomepageController::class,'sales'])->name('home.sales');
 Route::get('placeorder/{product}',[HomepageController::class,'create'])->name('placeorder');
 Route::middleware('auth')->group(function () {
     Route::resource('subcategories',  SubCategoryController::class); //
     Route::resource('categories', CategoryController::class); //
     Route::resource('products', ProductController::class);
     Route::resource('cart', CartController::class);
-//    Route::get('/cart/count', [CartController::class, 'cartCount'])->name('cart.count');
-    Route::get('/cart/count', [CartController::class, 'cartCount'])->name('cart.count');
-
+    Route::get('/carts/count', [CartController::class, 'cartCount'])->name('cart.count');
 });
+
 Route::resource('order', OrderController::class);
 Auth::routes();
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

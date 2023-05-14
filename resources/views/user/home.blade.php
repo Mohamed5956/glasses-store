@@ -5,6 +5,22 @@
 @section('content')
     <div class="container">
         <div class="row">
+            <div class="col-6 m-4">
+                <div class="search-bar">
+                    <form action="{{route('home.filter')}}" method="POST">
+                        @csrf
+                        <div class="input-group flex-nowrap">
+                            <input type="search" class="form-control" name="search" id="search_product" placeholder="Product Name" aria-label="Username" aria-describedby="addon-wrapping">
+                            <button type="submit" class="input-group-text"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            @if(count($categories) > 0)
             <div class="col-md-4">
                 <h3>Categories</h3>
                 <ul class="categories">
@@ -18,6 +34,7 @@
                     @endforeach
                 </ul>
             </div>
+            @endif
             <div class="col-md-8">
                 <h3>Products</h3>
                 <div class="row">
@@ -57,5 +74,20 @@
 
 @section('scripts')
     <script>
+        $(function() {
+            var availableTags = [];
+            $.ajax({
+                method: "get",
+                url: "/productList",
+                success: function(response) {
+                    availableTags = response.map(function(product) {
+                        return product.name;
+                    });
+                    $("#search_product").autocomplete({
+                        source: availableTags
+                    });
+                }
+            });
+        });
     </script>
 @endsection

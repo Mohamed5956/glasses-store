@@ -12,9 +12,18 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        .whatsapp-chat{
+            bottom: 10px;
+            left: 10px;
+            position: fixed;
+            z-index: 50;
+        }
+    </style>
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -33,6 +42,14 @@
                     <!-- Left Side Of Navbar -->
                     @if(Auth::user() && Auth::user()->role=='admin')
                         <ul class="navbar-nav me-auto">
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('home.index')}}">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('home.sales')}}">Sales</a>
+                                </li>
+                            </ul>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('categories.index')}}">Categories</a>
                             </li>
@@ -48,6 +65,12 @@
                         </ul>
                     @else
                         <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('order.index')}}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('order.index')}}">Sales</a>
+                            </li>
                         </ul>
                     @endif
                     <!-- Right Side Of Navbar -->
@@ -99,15 +122,26 @@
         <main class="py-4">
             @yield('content')
         </main>
+        <div class="whatsapp-chat">
+            <a href="https://wa.me/+201062535301?text=I'm%20interested%20in%20your%20shop" target="_blank">
+                <img src="{{ asset('images/whatsapp.png') }}" alt="whatsapp" height="40px" width="40px">
+            </a>
+        </div>
     </div>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
-            $.get("{{ route('cart.count') }}", async function(data) {
-                console.log(data);
-                d = await data
-                $('#cart-count').text(d.cartCount);
+            $.get("{{ route('cart.count') }}",  function(data) {
+                // console.log(data);
+                $('#cart-count').text(data.cartCount);
             });
         });
+        {{--fetch("{{ route('cart.count')}}").then(async response=>{--}}
+        {{--    let d = await response['cartCount'];--}}
+        {{--    console.log(d);--}}
+        {{--})--}}
     </script>
 
     @yield('scripts')
