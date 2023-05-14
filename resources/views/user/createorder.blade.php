@@ -54,6 +54,17 @@
                                 </div>
                             </div>
                             <div class="form-group row mt-3">
+                                <label for="address" class="col-md-4 col-form-label text-md-right">Address:</label>
+                                <div class="col-md-6">
+                                    <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required>
+                                    @error('address')
+                                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row mt-3">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">Email:</label>
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
@@ -79,6 +90,7 @@
                                 <label for="total_price" class="col-md-4 col-form-label text-md-right">Total Price:</label>
                                 <div class="col-md-6">
                                     <p id="total_price" class="form-control-static"></p>
+                                    <input type="hidden" name="quantity" id="quantityInput" value="1">
                                     <input type="hidden" name="total_price" id="total_price_input">
                                     @error('total_price')
                                     <span class="invalid-feedback" role="alert">
@@ -113,6 +125,7 @@
             var plusButton = $('#plus');
             var minusButton = $('#minus');
             var total_price_input = $('#total_price_input');
+            var quantity = 1;
 
             // Calculate total price initially
             calculateTotalPrice();
@@ -121,32 +134,31 @@
                 if (Number(quantityInput.val()) >= Number(available.innerText)) {
                     return;
                 } else {
-                    quantityInput.val(Number(quantityInput.val()) + 1);
+                    quantity++;
+                    quantityInput.val(quantity);
                     calculateTotalPrice();
                 }
             });
 
             minusButton.click(function() {
-                if (quantityInput.val() == 1) {
-                    quantityInput.val(1);
+                if (quantity <= 1) {
+                    return;
                 } else {
-                    quantityInput.val(Number(quantityInput.val()) - 1);
+                    quantity--;
+                    quantityInput.val(quantity);
                     calculateTotalPrice();
                 }
             });
 
-            // Automatically calculate total price when the quantity input changes
-            quantityInput.on('input', function() {
-                calculateTotalPrice();
-            });
-
             function calculateTotalPrice() {
-                var quantity = parseInt(quantityInput.val());
-                var price = parseFloat("{{ $product->price }}");
-                var totalPrice = quantity * price;
-                totalPriceDisplay.text('$' + totalPrice.toFixed(2));
-                total_price_input.val(totalPrice.toFixed(2)); // Set the value of the hidden input field
+                var price = {{$product->price}};
+                var quantity = Number(quantityInput.val());
+                var total = price * quantity;
+                totalPriceDisplay.text('$' + total.toFixed(2));
+                total_price_input.val(total.toFixed(2));
+                $('#quantityInput').val(quantity);
             }
         });
+
     </script>
 @endsection

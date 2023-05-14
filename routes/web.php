@@ -27,6 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('subcategories',  SubCategoryController::class); //
     Route::resource('categories', CategoryController::class); //
     Route::resource('products', ProductController::class);
+    Route::resource('cart', CartController::class);
+//    Route::get('/cart/count', [CartController::class, 'cartCount'])->name('cart.count');
+    Route::get('/cart/count', [CartController::class, 'cartCount'])->name('cart.count');
+
 });
 Route::resource('order', OrderController::class);
 Auth::routes();

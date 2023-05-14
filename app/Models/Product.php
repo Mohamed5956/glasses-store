@@ -21,4 +21,8 @@ class Product extends Model
     {
         return $this->belongsTo(Subcategory::class);
     }
+    public function orderItems(){
+        return $this->hasMany(Orderitem::class);
+    }
+
 }

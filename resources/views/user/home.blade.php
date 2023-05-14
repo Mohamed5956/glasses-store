@@ -32,10 +32,18 @@
                                         <small class="text-muted">${{ $product->price }}</small>
                                     </div>
                                 </div>
-                                <div class="card-footer mx-auto my-auto">
-                                    <a href="#" class="btn btn-success">Add To Cart</a>
-                                    <a href="{{route('placeorder',$product)}}" class="btn btn-success">Buy Now</a>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <form action="{{ route('cart.store') }}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                        </form>
+                                        <a href="{{route('placeorder',$product)}}" class="btn btn-success ms-2">Buy Now</a>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
