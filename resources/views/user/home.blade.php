@@ -3,6 +3,12 @@
 @section('title') Home @endsection
 
 @section('content')
+@if(session('status'))
+    <div id="message-container" class="alert text-center alert-{{ session('status') }}">
+        {{ session('message') }}
+    </div>
+@endif
+
     <div class="container">
         <div class="row">
             <div class="col-md-4">
@@ -56,6 +62,17 @@
 @endsection
 
 @section('scripts')
-    <script>
-    </script>
+<script>
+    // Delay in milliseconds
+    const delay = 3000;
+
+    // Get the message container element
+    const messageContainer = document.getElementById('message-container');
+
+    // Hide the message after a delay
+    setTimeout(function() {
+        messageContainer.style.display = 'none';
+    }, delay);
+</script>
+
 @endsection

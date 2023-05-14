@@ -5,48 +5,44 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Models\Cart;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the user's cart items.
      */
     public function index()
     {
-        //
-        $cart = Cart::where('user_id',Auth::user()->id)->get();
-        if($cart){
-            return view('user.cart.index',['cartItems'=>$cart]);
-        }else{
-            return view('user.home')->with("Theres's No Items to display");
+        $cartItems = Cart::where('user_id', Auth::id())->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('home.index')->with("message", "There are no items to display")->with('status', 'warning');
         }
+
+        return view('user.cart.index', ['cartItems' => $cartItems]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Add a product to the cart.
      */
     public function store(StoreCartRequest $request)
     {
-        // Get the currently authenticated user
-        $user = auth()->user();
+        $user = Auth::user();
+        $existingCart = Cart::where('user_id', $user->id)
+            ->where('product_id', $request->product_id)
+            ->first();
 
-        // Check if the user already has this product in their cart
-        $existingCart = Cart::where('user_id', $user->id)->where('product_id', $request->product_id)->first();
         if ($existingCart) {
-            // If the user already has this product in their cart, increment the quantity
             $existingCart->prod_qty += 1;
             $existingCart->save();
         } else {
-            // Otherwise, create a new cart item for the user
             Cart::create([
                 'user_id' => $user->id,
                 'product_id' => $request->product_id,
@@ -54,57 +50,114 @@ class CartController extends Controller
             ]);
         }
 
-        // Redirect the user back to the product page
         return redirect()->back();
     }
 
     /**
-     * Display the specified resource.
+     * Show the confirmation page for placing an order.
      */
-    public function show(Cart $cart)
+    public function proceedOrder()
     {
-        //
+        $user = Auth::user();
+        $cartItems = Cart::where('user_id', $user->id)->get();
+        $userInfo = User::find($user->id);
+
+        return view('user.cart.confirm_order', [
+            'cartItems' => $cartItems,
+            'userInfo' => $userInfo,
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Store the order and order items in the database.
      */
-    public function edit(Cart $cart)
+    public function save(Request $request)
     {
-        //
+        $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+        ]);
+
+        $cartItems = Cart::where('user_id', Auth::id())->get();
+        $userInfo = Auth::user();
+
+        DB::beginTransaction();
+
+        try {
+            $order = new Order();
+            $order->firstName = $request->input('firstName');
+            $order->lastName = $request->input('lastName');
+            $order->email = $request->input('email');
+            $order->phone = $request->input('phone');
+            $order->address = $request->input('address');
+            $order->total_price = $this->calculateTotalPrice($cartItems);
+            $order->user_id = $userInfo->id;
+            $order->save();
+
+            foreach ($cartItems as $cartItem) {
+                $orderItem = new OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->product_id = $cartItem->product_id;
+                $orderItem->quantity = $cartItem->prod_qty;
+                $orderItem->price = $cartItem->product->price;
+                $orderItem->save();
+            }
+
+            $this->clearCart();
+
+            DB::commit();
+
+            Session::flash('success', 'Order placed successfully!');
+            return redirect()->route('placeorder');
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect()->back()->with('error', 'Failed to place the order. Please try again.');
+        }
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCartRequest $request, Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Remove an item from the cart.
      */
     public function destroy(Cart $cart)
     {
-        //
         $cart->delete();
         return redirect()->back();
     }
+
+    /**
+     * Get the count of items in the cart.
+     */
     public function cartCount()
     {
         $user = Auth::user();
         $cartCount = Cart::where('user_id', $user->id)->sum('prod_qty');
         return response()->json(['cartCount' => $cartCount]);
     }
-    public function getTotal() {
+
+    /**
+     * Calculate the total price of the cart items.
+     */
+    private function calculateTotalPrice($cartItems)
+    {
         $total = 0;
-        $cartItems = Cart::getContent();
-        foreach ($cartItems as $item) {
-            $total += $item->price * $item->quantity;
+
+        foreach ($cartItems as $cartItem) {
+            $total += $cartItem->product->price * $cartItem->prod_qty;
         }
+
         return $total;
     }
 
-
+    /**
+     * Clear the cart.
+     */
+    private function clearCart()
+    {
+        $user = Auth::user();
+        Cart::where('user_id', $user->id)->delete();
+    }
 }
