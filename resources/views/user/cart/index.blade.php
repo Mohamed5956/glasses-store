@@ -5,77 +5,92 @@
         <h2>My Cart</h2>
         <table class="table">
             <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Available Quantity</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach ($cartItems as $item)
-                    <tr>
-                        <td>{{ $item->product->name }}</td>
-                        <td>{{ $item->product->price }}</td>
-                        <td>
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-primary m-1 quantity-control" data-id="{{ $item->id }}" data-action="increase">+</button>
-                                <input type="text" class="form-control w-25 m-1 quantity-input" min="1" value="{{ $item->prod_qty }}" disabled>
-                                <button class="btn btn-primary m-1 quantity-control" data-id="{{ $item->id }}" data-action="decrease">-</button>
-                            </div>
-                        </td>
-                        <td>{{ $item->product->price * $item->prod_qty }}</td>
-                        <td>
-                            <form action="{{ route('cart.remove', $item->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
+            @foreach ($cartItems as $item)
+                <tr>
+                    <td>{{ $item->product->name }}</td>
+                    <td>{{ $item->product->price }}</td>
+                    <td><p>{{ $item->product->quantity}}</p></td>
+                    <td>
+                        <div class="d-flex">
+                            <button class="btn btn-primary m-1 decrease-button" data-id="{{ $item->id }}">-</button>
+                            <input type="text" class="form-control w-25 m-1 quantity-input" min="1" value="{{ $item->prod_qty }}" readonly>
+                            <button class="btn btn-primary m-1 increase-button" data-id="{{ $item->id }}">+</button>
+                        </div>
+                    </td>
+                    <td>{{ $item->product->price * $item->prod_qty }}</td>
+                    <td>
+                        <form action="{{ route('cart.remove', $item->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
         <div class="text-right">
-    <a href="{{ route('cart.confirm_order') }}" class="btn btn-primary">Proceed to Checkout</a>
-</div>
-
+            <a href="{{ route('cart.confirm_order') }}" class="btn btn-primary">Proceed to Checkout</a>
+        </div>
     </div>
 @endsection
 
 @section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const quantityControls = document.querySelectorAll('.quantity-control');
+        $(document).ready(function() {
+            $('.decrease-button').on('click', function(event) {
+                event.preventDefault();
+                const itemId = $(this).data('id');
+                const quantityInput = $(this).closest('td').find('.quantity-input');
+                const availableQuantity = parseInt($(this).closest('td').prev().find('p').text());
 
-            quantityControls.forEach(function(control) {
-                control.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const itemId = this.getAttribute('data-id');
-                    const action = this.getAttribute('data-action');
-                    const quantityInput = this.parentNode.querySelector('.quantity-input');
+                let newQuantity = parseInt(quantityInput.val());
 
-                    if (action === 'increase') {
-                        quantityInput.value = parseInt(quantityInput.value) + 1;
-                    } else if (action === 'decrease') {
-                        if (parseInt(quantityInput.value) > 1) {
-                            quantityInput.value = parseInt(quantityInput.value) - 1;
-                        }
-                    }
-
-                    updateCartItemQuantity(itemId, quantityInput.value);
-                });
+                if (newQuantity > 1) {
+                    newQuantity -= 1;
+                    updateCartItemQuantity(itemId, newQuantity, quantityInput);
+                }
             });
 
-            function updateCartItemQuantity(itemId, quantity) {
-                axios.put(`/cart/${itemId}`, { quantity: quantity })
-                    .then(function(response) {
-                        console.log(response.data); // Handle success response
-                    })
-                    .catch(function(error) {
+            $('.increase-button').on('click', function(event) {
+                event.preventDefault();
+                const itemId = $(this).data('id');
+                const quantityInput = $(this).closest('td').find('.quantity-input');
+                const availableQuantity = parseInt($(this).closest('td').prev().find('p').text());
+
+                let newQuantity = parseInt(quantityInput.val());
+
+                if (newQuantity < availableQuantity) {
+                    newQuantity += 1;
+                    updateCartItemQuantity(itemId, newQuantity, quantityInput);
+                }
+            });
+
+            function updateCartItemQuantity(itemId, quantity, quantityInput) {
+                var token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: `/cart/${itemId}`,
+                    method: 'PUT',
+                    data: { prod_qty: quantity , _token: token },
+                    success: function(response) {
+                        console.log(response); // Handle success response
+                        quantityInput.val(quantity);
+                    },
+                    error: function(error) {
                         console.log(error); // Handle error response
-                    });
+                    }
+                });
             }
         });
     </script>

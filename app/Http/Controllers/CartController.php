@@ -51,6 +51,11 @@ class CartController extends Controller
         }
         return redirect()->back();
     }
+    public function update(Request $request,int $id){
+        $cart = Cart::findOrFail($id);
+        $cart->update($request->all());
+        return $cart;
+    }
 
     /**
      * Show the confirmation page for placing an order.
