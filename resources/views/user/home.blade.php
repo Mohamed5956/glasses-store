@@ -3,6 +3,12 @@
 @section('title') Home @endsection
 
 @section('content')
+@if(session('status'))
+    <div id="message-container" class="alert text-center alert-{{ session('status') }}">
+        {{ session('message') }}
+    </div>
+@endif
+
     <div class="container">
         <div class="row">
             <div class="col-6 m-4">
@@ -21,19 +27,19 @@
     <div class="container">
         <div class="row">
             @if(count($categories) > 0)
-            <div class="col-md-4">
-                <h3>Categories</h3>
-                <ul class="categories">
-                    @foreach($categories as $parentCat)
-                        <li>{{ $parentCat->name }}</li>
-                        <ul class="child-categories" >
-                            @foreach($parentCat->subcategory as $childCat)
-                                <li>{{$childCat->name}}</li>
-                            @endforeach
-                        </ul>
-                    @endforeach
-                </ul>
-            </div>
+                <div class="col-md-4">
+                    <h3>Categories</h3>
+                    <ul class="categories">
+                        @foreach($categories as $parentCat)
+                            <li>{{ $parentCat->name }}</li>
+                            <ul class="child-categories">
+                                @foreach($parentCat->subcategory as $childCat)
+                                    <li><a href="{{ route('subcategory.show', $childCat->id) }}">{{ $childCat->name }}</a></li>
+                                @endforeach
+                            </ul>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
             <div class="col-md-8">
                 <h3>Products</h3>
@@ -73,7 +79,22 @@
 @endsection
 
 @section('scripts')
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
     <script>
+    // Delay in milliseconds
+    const delay = 3000;
+
+    // Get the message container element
+    const messageContainer = document.getElementById('message-container');
+    if(messageContainer){
+    // Hide the message after a delay
+    setTimeout(function() {
+        messageContainer.style.display = 'none';
+    }, delay);
+    }
+
+
         $(function() {
             var availableTags = [];
             $.ajax({

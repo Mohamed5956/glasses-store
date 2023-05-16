@@ -70,6 +70,12 @@ class HomepageController extends Controller
     {
         //
     }
+    public function subcategory(Subcategory $subcategory){
+        $products=$subcategory->products;
+//        dd($products);
+        $categories=Category::all();
+        return view('user.home',['subcategory' => $subcategory,'products'=>$products,'categories' => $categories]);
+    }
     public function sales(){
         $products= Product::where('trend',1)->get();
 
