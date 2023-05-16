@@ -53,7 +53,6 @@ class CartController extends Controller
                 'prod_qty' => 1,
             ]);
         }
-
         // Redirect the user back to the product page
         return redirect()->back();
     }
