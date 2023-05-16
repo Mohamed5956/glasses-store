@@ -70,4 +70,18 @@ class HomepageController extends Controller
     {
         //
     }
+    public function sales(){
+        $products= Product::where('trend',1)->get();
+
+        return view('user.sales',['products'=>$products]);
+    }
+    public function filter(Request $request){
+        $products = Product::where("name","LIKE","%$request->search%")->get();
+        $categories = Category::all();
+        return view('user.home',['products'=>$products,'categories'=>$categories]);
+    }
+    public function productList(){
+        $products= Product::all();
+        return $products;
+    }
 }
