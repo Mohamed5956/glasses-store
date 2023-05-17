@@ -27,19 +27,19 @@
     <div class="container">
         <div class="row">
             @if(count($categories) > 0)
-                <div class="col-md-4">
-                    <h3>Categories</h3>
-                    <ul class="categories">
-                        @foreach($categories as $parentCat)
-                            <li>{{ $parentCat->name }}</li>
-                            <ul class="child-categories">
-                                @foreach($parentCat->subcategory as $childCat)
-                                    <li><a href="{{ route('subcategory.show', $childCat->id) }}">{{ $childCat->name }}</a></li>
-                                @endforeach
-                            </ul>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="col-md-4">
+                <h3>Categories</h3>
+                <ul class="categories">
+                    @foreach($categories as $parentCat)
+                        <li>{{ $parentCat->name }}</li>
+                        <ul class="child-categories" >
+                            @foreach($parentCat->subcategory as $childCat)
+                                <li>{{$childCat->name}}</li>
+                            @endforeach
+                        </ul>
+                    @endforeach
+                </ul>
+            </div>
             @endif
             <div class="col-md-8">
                 <h3>Products</h3>
@@ -79,9 +79,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
-    <script>
+<script>
     // Delay in milliseconds
     const delay = 3000;
 

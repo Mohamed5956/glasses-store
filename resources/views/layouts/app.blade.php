@@ -20,62 +20,53 @@
 <body>
     <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
+    <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             @if(Auth::user() && Auth::user()->role=='admin')
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('categories.index')}}">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('subcategories.index')}}">Sub Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('products.index')}}">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('order.index')}}">Orders</a>
-                    </li>
+            
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="{{ url('/') }}">Products</a></li>
+                <li class="nav-item"><a class="nav-link {{ Request::is('categories') ? 'active' : '' }}" href="{{ url('categories') }}">Categories</a></li>
+                <li class="nav-item"><a class="nav-link {{ Request::is('subcategories') ? 'active' : '' }}" href="{{ url('subcategories') }}">Subcategories</a></li>
+                <li class="nav-item"><a class="nav-link {{ Request::is('sales') ? 'active' : '' }}" href="{{ url('sales') }}">Sales</a></li>
+                <li class="nav-item"><a class="nav-link {{ Request::is('orders') ? 'active' : '' }}" href="{{ url('order') }}">Orders</a></li>
+                
                 </ul>
             @else
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('home.index')}}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('home.sales')}}">Sales</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="{{ url('/') }}">Products</a></li>
+
+                    <li class="nav-item"><a class="nav-link {{ Request::is('sales') ? 'active' : '' }}" href="{{ url('sales') }}">Sales</a></li>
+                    
                 </ul>
             @endif
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav  mb-2 mb-lg-0 ms-lg-4 ms-auto">
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
+                    <li class="nav-item"><a class="nav-link {{ Request::is('/login') ? 'active' : '' }}" href="{{ url('/login') }}">Login</a></li>
+
+                        
                     @endif
 
                     @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
+                    <li class="nav-item"><a class="nav-link {{ Request::is('/register') ? 'active' : '' }}" href="{{ url('/register') }}">Register</a></li>
+
                     @endif
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('cart.index') }}">
                             <i class="fas fa-shopping-cart"></i>
-                            <span id="cart-count"></span>
+                            <span id="cart-count" class="badge bg-light text-dark ms-1 rounded-pill"></span>
                         </a>
                     </li>
 
@@ -102,7 +93,6 @@
         </div>
     </div>
 </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
