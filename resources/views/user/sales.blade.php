@@ -1,15 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.nav')
 
-@section('title') Sales @endsection
+@section('title')
+    Sales
+@endsection
 
 @section('content')
     <div class="container">
         <h1 class="text-center my-5">Sales - Up to 40% off</h1>
         <div class="row">
-            @foreach($products as $product)
+            @foreach ($products as $product)
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}">
+                        <img class="card-img-top" src="{{ asset('images/products/' . $product->image) }}"
+                            alt="{{ $product->name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ $product->description }}</p>
@@ -21,6 +24,8 @@
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </form>
+                                <a href="{{ route('placeorder', $product) }}" class="btn btn-success ms-2">Buy
+                                    Now</a>
                             </div>
                         </div>
                     </div>
@@ -43,10 +48,12 @@
             font-size: 1rem;
             z-index: 10;
         }
+
         .card-img-top {
             height: 250px;
             object-fit: cover;
         }
+
         .price {
             font-size: 1.25rem;
             font-weight: bold;

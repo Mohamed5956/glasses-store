@@ -17,7 +17,7 @@ class HomepageController extends Controller
         $products = Product::all();
         $categories = Category::all();
         $subcategories = Subcategory::all();
-        return view('user.home',['products' => $products, 'categories' => $categories,'subcategories' => $subcategories]);
+        return view('user.theme',['products' => $products, 'categories' => $categories,'subcategories' => $subcategories]);
         //
     }
 
@@ -74,7 +74,7 @@ class HomepageController extends Controller
         $products=$subcategory->products;
 //        dd($products);
         $categories=Category::all();
-        return view('user.home',['subcategory' => $subcategory,'products'=>$products,'categories' => $categories]);
+        return view('user.theme',['subcategory' => $subcategory,'products'=>$products,'categories' => $categories]);
     }
     public function sales(){
         $products= Product::where('trend',1)->get();
@@ -84,7 +84,7 @@ class HomepageController extends Controller
     public function filter(Request $request){
         $products = Product::where("name","LIKE","%$request->search%")->get();
         $categories = Category::all();
-        return view('user.home',['products'=>$products,'categories'=>$categories]);
+        return view('user.theme',['products'=>$products,'categories'=>$categories]);
     }
     public function productList(){
         $products= Product::all();
