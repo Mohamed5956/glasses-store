@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title') Sub Categoires @endsection
 
 @section('content')
     <div class="container">
@@ -9,7 +10,7 @@
 
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="{{ route('subcategories.create') }}" class="btn btn-primary">{{ __('Create Subcategory') }}</a>
+                            <a href="{{ route('subcategories.create') }}" class="btn btn-primary">{{ __('Create SubCategory') }}</a>
                         </div>
 
                         @if (count($subcategories) > 0)
@@ -17,15 +18,15 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">{{ __('Name') }}</th>
-                                    <th scope="col">{{ __('Slug') }}</th>
+                                    <th scope="col">{{__('category')}}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
                                 </tr>
-                                </thead>
+                                </thead>Sub Categories
                                 <tbody>
                                 @foreach ($subcategories as $subcategory)
                                     <tr>
                                         <td>{{ $subcategory->name }}</td>
-                                        <td>{{ $subcategory->slug }}</td>
+                                        <td>{{$subcategory->category->name}}</td>
                                         <td>
                                             <a href="{{ route('subcategories.edit', $subcategory) }}" class="btn btn-sm btn-primary">{{ __('Edit') }}</a>
 
@@ -40,7 +41,7 @@
                                 </tbody>
                             </table>
                         @else
-                            <p>No subcategories found.</p>
+                            <p>No Subcategories found.</p>
                         @endif
                     </div>
                 </div>

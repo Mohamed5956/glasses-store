@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -11,7 +12,8 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        if(!Auth::user())  return false;
+        else return true;
     }
 
     /**
@@ -23,6 +25,11 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             //
+            'name'=>'required',
+            'description'=>'required',
+            'price'=>'required',
+            'quantity'=>'numeric|required',
+            'subcategory_id'=>'required',
         ];
     }
 }
