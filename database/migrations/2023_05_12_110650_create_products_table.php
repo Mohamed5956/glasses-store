@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('quantity')->unsigned();
             $table->string('image')->nullable();
-            $table->integer('');
-            $table->unsignedBigInteger('category_id');
+            $table->tinyInteger()->default(0);
+//            $table->;
 
             $table->timestamps();
         });
