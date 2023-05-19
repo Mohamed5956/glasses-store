@@ -14,6 +14,8 @@
                         </div>
 
                         @if (count($products) > 0)
+                        <div class="table-responsive">
+
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -43,7 +45,7 @@
                                         </td>
 
                                         <td>
-                                            <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning">{{ __('Edit') }}</a>
+                                            <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning mb-1">{{ __('Edit') }}</a>
                                             <form class="d-inline" method="POST" action="{{ route('products.destroy', $product) }}">
                                                 @csrf
                                                 @method('DELETE')
@@ -54,6 +56,8 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                        </div>
+
                         @else
                             <p>No Products found.</p>
                         @endif

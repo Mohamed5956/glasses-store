@@ -28,7 +28,7 @@
                                         <td>{{ $subcategory->name }}</td>
                                         <td>{{$subcategory->category->name}}</td>
                                         <td>
-                                            <a href="{{ route('subcategories.edit', $subcategory) }}" class="btn btn-sm btn-primary">{{ __('Edit') }}</a>
+                                            <a href="{{ route('subcategories.edit', $subcategory) }}" class="btn btn-sm btn-primary mb-1">{{ __('Edit') }}</a>
 
                                             <form class="d-inline" method="POST" action="{{ route('subcategories.destroy', $subcategory) }}">
                                                 @csrf
