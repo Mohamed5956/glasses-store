@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LogoutController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,13 +23,13 @@ use App\Http\Controllers\Auth\LogoutController;
 */
 
 // Route::resource('home', HomepageController::class);
-Route::get('/subcategory/{subcategory}',[HomepageController::class,'subcategory'])->name('subcategory.show');
+Route::get('/subcategory/{subcategory}', [HomepageController::class,'subcategory'])->name('subcategory.show');
 Route::get('/', [HomepageController::class,'index'])->name('home.index');
-Route::resource('home',HomepageController::class);
-Route::post('filter',[HomepageController::class,'filter'])->name('home.filter');
-Route::get('productList',[HomepageController::class,'productList'])->name('productList');
-Route::get('sales',[HomepageController::class,'sales'])->name('home.sales');
-Route::get('placeorder/{product}',[HomepageController::class,'create'])->name('placeorder');
+Route::resource('home', HomepageController::class);
+Route::post('filter', [HomepageController::class,'filter'])->name('home.filter');
+Route::get('productList', [HomepageController::class,'productList'])->name('productList');
+Route::get('sales', [HomepageController::class,'sales'])->name('home.sales');
+Route::get('placeorder/{product}', [HomepageController::class,'create'])->name('placeorder');
 Route::middleware('auth')->group(function () {
     Route::get('/cart/count', [CartController::class, 'cartCount'])->name('cart.count');
     Route::resource('subcategories', SubCategoryController::class); //
@@ -51,4 +50,4 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::resource('order', OrderController::class);
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

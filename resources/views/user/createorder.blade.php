@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header">{{ __('Product') }}</div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-around mb-3">
+                        <div class="d-flex justify-content-around mb-3 flex-wrap">
                             <p>Product: {{$product->name}}</p>
                             <p>Price: {{$product->price}}</p>
                             <p class="available_quantity">Available Quantity: <span id="available">{{$product->quantity}}</span></p>
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-center mt-5 ">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Place Order') }}</div>
